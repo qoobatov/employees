@@ -34,6 +34,7 @@ class App extends React.Component {
           id: 3,
         },
       ],
+      term: "",
     };
 
     this.maxId = 4;
@@ -104,19 +105,34 @@ class App extends React.Component {
     }));
   };
 
+  searchEmployees = (items, term) => {
+    if (term.length === 0) {
+      return items;
+    }
+    return items.filter((item) => {
+      return item.name.indexOf(term) > -1;
+    });
+  };
+
+  onUpdateSearch = (term) => {  // метод нужен для обновления стейта терм здесь в App, он приходит из компонента SearchPanel 138 урок
+    this.setState({ term });
+  };
+
   render() {
+    const { data, term } = this.state;
     const employees = this.state.data.length; // общее количество сотрудников
     const increase = this.state.data.filter((item) => item.increase).length; // это те которые получат премию
+    const visibleData = this.searchEmployees(data, term);
     return (
       <div className="app">
         <AppInfo increase={increase} employees={employees} />
 
         <div className="search-panel">
-          <SearchPanel />
+          <SearchPanel onUpdateSearch = {this.onUpdateSearch} />
           <AppFilter />
         </div>
         <EmployeesList
-          data={this.state.data}
+          data={visibleData}
           onDelete={this.deleteItem}
           onToggleIncrease={this.onToggleIncrease}
           onToggleRise={this.onToggleRise}
