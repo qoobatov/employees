@@ -71,26 +71,45 @@ class App extends React.Component {
   };
 
   onToggleIncrease = (id) => {
-    this.setState(({ data }) => {
-      const index = data.findIndex((elem) => elem.id === id); // нахождение индекса элемента массива
+    // this.setState(({ data }) => {
+    //   const index = data.findIndex((elem) => elem.id === id); // нахождение индекса элемента массива
 
-      const old = data[index]; // этот элемент перезаписываем в переменную old
-      const newItem = { ...old, increase: !old.increase }; // теперь разворачиваем старый элемент с переназначением свойства внутри
-      const newArr = [...old.slice(0, index), newItem, data.slice(index + 1)]; // дальше просто берем кусочек элемента до индекса добвляем то свойство что мы изменили, и дальше берем все свойтва до конца начиная от индекса и это все объединяем в массив newArr  и ниже в return просто меняем стейт на новое значение (сохранено иммутабельность т.е неизменяемость)
+    //   const old = data[index]; // этот элемент перезаписываем в переменную old
+    //   const newItem = { ...old, increase: !old.increase }; // теперь разворачиваем старый элемент с переназначением свойства внутри
+    //   const newArr = [...data.slice(0, index), newItem, ...data.slice(index + 1)]; // дальше просто берем кусочек элемента до индекса добвляем то свойство что мы изменили, и дальше берем все свойтва до конца начиная от индекса и это все объединяем в массив newArr  и ниже в return просто меняем стейт на новое значение (сохранено иммутабельность т.е неизменяемость)
 
-      return {
-        data: newArr,
-      };
-    });
+    //   return {
+    //     data: newArr,
+    //   };
+    // });
+    // смотри есть еще другой способ более короткий,тоже самое что и вверху, ноболее короче
+    this.setState(({ data }) => ({
+      data: data.map((item) => {
+        if (item.id === id) {
+          return { ...item, increase: !item.increase };
+        }
+        return item;
+      }),
+    }));
   };
+
   onToggleRise = (id) => {
-    console.log(`Rise this ${id}`);
+    this.setState(({ data }) => ({
+      data: data.map((item) => {
+        if (item.id === id) {
+          return { ...item, rise: !item.rise };
+        }
+        return item;
+      }),
+    }));
   };
 
   render() {
+    const employees = this.state.data.length; // общее количество сотрудников
+    const increase = this.state.data.filter((item) => item.increase).length; // это те которые получат премию
     return (
       <div className="app">
-        <AppInfo />
+        <AppInfo increase={increase} employees={employees} />
 
         <div className="search-panel">
           <SearchPanel />
