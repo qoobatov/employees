@@ -2,7 +2,7 @@ import React from "react";
 import EmployeesListItem from "../employees-list-item/employees-list-item";
 import "./employees-list.css";
 
-const EmployeesList = ({ data, onDelete }) => {
+const EmployeesList = ({ data, onDelete, onToggleIncrease, onToggleRise }) => {
   let elements = data.map((item) => {
     // const {id, ...itemProps} = item есть вот такой короткий вариант id отдельно, остальные пропсы в itemProps и ниже соответственно нужно поменять в компоненте.
     return (
@@ -11,7 +11,10 @@ const EmployeesList = ({ data, onDelete }) => {
         salary={item.salary}
         increase={item.increase}
         key={item.id}
+        rise={item.rise}
         onDelete={() => onDelete(item.id)}
+        onToggleIncrease={() => onToggleIncrease(item.id)}
+        onToggleRise={() => onToggleRise(item.id)}
       />
     );
   });
