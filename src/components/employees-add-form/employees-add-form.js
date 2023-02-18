@@ -11,9 +11,19 @@ class EmployeesAddForm extends React.Component {
   }
 
   onChangeValue = (event) => {
-    this.setState((state) => ({ // тут state в аргументах нужен для того чтобы строго отталкиваться от последнего значения state(но, сейчас не используется потому что нам не важно последнее значение state )
+    this.setState((state) => ({
+      // тут state в аргументах нужен для того чтобы строго отталкиваться от последнего значения state(но, сейчас не используется потому что нам не важно последнее значение state )
       [event.target.name]: event.target.value, // здесь почему target.name потому,что добавили атрибут name ="" в инпуты, который заменяет название ключей в this.state
     }));
+  };
+
+  onSubmit = (e) => {
+    e.preventDefault();
+    this.props.onAdd(this.state.name, this.state.salary);
+    this.setState({
+      name: "",
+      salary: "",
+    });
   };
 
   render() {
@@ -22,7 +32,7 @@ class EmployeesAddForm extends React.Component {
     return (
       <div className="app-add-form">
         <h3>Добавьте нового сотрудника</h3>
-        <form className="add-form d-flex">
+        <form className="add-form d-flex" onSubmit={this.onSubmit}>
           <input
             type="text"
             className="form-control new-post-label"
