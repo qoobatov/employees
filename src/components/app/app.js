@@ -34,13 +34,15 @@ class App extends React.Component {
           id: 3,
         },
       ],
-      term: "",
+      term: "", // стейт строки поиска
+      filter: "", // стейт фильтра
     };
 
     this.maxId = 4;
   }
 
   deleteItem = (id) => {
+    // это иконка удаления пользователя
     this.setState(({ data }) => {
       // const index = data.findIndex((elem) => elem.id === id);  // найти индекс массива в сравнении с ключем id в элементе массива
 
@@ -56,6 +58,7 @@ class App extends React.Component {
   };
 
   addItem = (name, salary) => {
+    // этот метод для добавления пользователей
     const newItem = {
       name,
       salary,
@@ -72,6 +75,7 @@ class App extends React.Component {
   };
 
   onToggleIncrease = (id) => {
+    // Это окрашивание (выделение пользователей )
     // this.setState(({ data }) => {
     //   const index = data.findIndex((elem) => elem.id === id); // нахождение индекса элемента массива
 
@@ -95,6 +99,7 @@ class App extends React.Component {
   };
 
   onToggleRise = (id) => {
+    // это назначение звездочки на пользователя
     this.setState(({ data }) => ({
       data: data.map((item) => {
         if (item.id === id) {
@@ -106,6 +111,7 @@ class App extends React.Component {
   };
 
   searchEmployees = (items, term) => {
+    // Эта сама функция для поиска и фильтрации
     if (term.length === 0) {
       return items;
     }
@@ -114,22 +120,38 @@ class App extends React.Component {
     });
   };
 
-  onUpdateSearch = (term) => {  // метод нужен для обновления стейта терм здесь в App, он приходит из компонента SearchPanel 138 урок
+  onUpdateSearchInApp = (term) => {
+    // метод нужен для обновления стейта терм здесь в App, он приходит из компонента SearchPanel 138 урок
     this.setState({ term });
   };
 
+  filterPost = (items, filter) => {
+    // Это метод для фильтров
+    switch (filter) {
+      case "rise": // star
+        return items.filter((item) => item.rise);
+      case "moreThen1000":
+        return items.filter((item) => item.salary > 1000);
+      default:
+        return items;
+    }
+  };
+
   render() {
-    const { data, term } = this.state;
+    const { data, term, filter } = this.state;
     const employees = this.state.data.length; // общее количество сотрудников
     const increase = this.state.data.filter((item) => item.increase).length; // это те которые получат премию
-    const visibleData = this.searchEmployees(data, term);
+    const visibleData = this.filterPost(
+      this.searchEmployees(data, term),
+      filter
+    );
     return (
       <div className="app">
         <AppInfo increase={increase} employees={employees} />
 
         <div className="search-panel">
-          <SearchPanel onUpdateSearch = {this.onUpdateSearch} />
-          <AppFilter />
+          <SearchPanel onUpdateSearchInApp={this.onUpdateSearchInApp} />
+          <AppFilter filter={filter} />
         </div>
         <EmployeesList
           data={visibleData}

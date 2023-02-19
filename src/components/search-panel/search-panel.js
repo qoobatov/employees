@@ -12,7 +12,7 @@ class SearchPanel extends React.Component {
   onUpdateSearch = (e) => {
     const term = e.target.value;
     this.setState({ term });
-    this.props.onUpdateSearch(term);
+    this.props.onUpdateSearchInApp(term);
   };
 
   render() {
