@@ -19,6 +19,7 @@ class EmployeesAddForm extends React.Component {
 
   onSubmit = (e) => {
     e.preventDefault();
+    if (this.state.name < 3 || !this.state.salary) return;    // это строка не дает добавлять пустые значения в items
     this.props.onAdd(this.state.name, this.state.salary);
     this.setState({
       name: "",

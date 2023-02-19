@@ -22,7 +22,11 @@ const EmployeesListItem = (props) => {
 
   return (
     <li className={classNames}>
-      <span onClick={onToggleRise} className="list-group-item-label">
+      <span
+        onClick={onToggleRise}
+        className="list-group-item-label"
+        data-togle="rise" // Вот это метка, потом эту метку можно получить через event.currentTarget.getAttribute('data-toggle') для оптимизации
+      >
         {name}
       </span>
       <input
@@ -35,6 +39,7 @@ const EmployeesListItem = (props) => {
           onClick={onToggleIncrease}
           type="button"
           className="btn-cookie btn-sm "
+          data-toggle="increase"  // Вот это метка, потом эту метку можно получить через event.currentTarget.getAttribute('data-toggle') для оптимизации
         >
           <i className="fas fa-cookie"></i>
         </button>
