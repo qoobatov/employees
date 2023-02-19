@@ -35,7 +35,7 @@ class App extends React.Component {
         },
       ],
       term: "", // стейт строки поиска
-      filter: "", // стейт фильтра
+      filter: "all", // стейт фильтра
     };
 
     this.maxId = 4;
@@ -137,6 +137,10 @@ class App extends React.Component {
     }
   };
 
+  onFilterSelect = (filter) => {
+    this.setState({ filter });
+  };
+
   render() {
     const { data, term, filter } = this.state;
     const employees = this.state.data.length; // общее количество сотрудников
@@ -151,7 +155,7 @@ class App extends React.Component {
 
         <div className="search-panel">
           <SearchPanel onUpdateSearchInApp={this.onUpdateSearchInApp} />
-          <AppFilter filter={filter} />
+          <AppFilter filter={filter} onFilterSelect={this.onFilterSelect} />
         </div>
         <EmployeesList
           data={visibleData}
